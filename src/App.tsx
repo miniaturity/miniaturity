@@ -1,26 +1,60 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Dither from './components/Dither';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <div className="bg">
+        <Dither
+          waveColor={[0.5, 0.5, 0.5]}
+          disableAnimation={false}
+          enableMouseInteraction={true}
+          mouseRadius={0.3}
+          colorNum={4}
+          waveAmplitude={0.3}
+          waveFrequency={3}
+          waveSpeed={0.05}
+        />
+      </div>
+
+      <div className="app">
+          <div className="mid"> 
+
+            <div className="title">
+              Miniaturity.coM
+            </div>
+
+            <div className="about">
+              <div className="contact">
+                <button className="contact-button">
+                  github
+                </button>
+                <button className="contact-button">
+                  youtube
+                </button>
+                <button className="contact-button">
+                  insta
+                </button>
+                <button className="contact-button">
+                  itch io
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+          
+      </div>
+      </>
+  )
 }
+
+
+
+
+
+
 
 export default App;
