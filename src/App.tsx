@@ -27,18 +27,20 @@ function App() {
 
             <div className="about">
               <div className="contact">
-                <button className="contact-button">
+                <a href="https://github.com/miniaturity" target="_blank"><button className="contact-button"
+                
+                >
                   github
-                </button>
-                <button className="contact-button">
+                </button></a>
+                <a href="https://www.youtube.com/@miniaturity" target="_blank"><button className="contact-button">
                   youtube
-                </button>
-                <button className="contact-button">
+                </button></a>
+                <a href="https://www.instagram.com/m.iniaturity/" target="_blank"><button className="contact-button">
                   insta
-                </button>
-                <button className="contact-button">
+                </button></a>
+                <a href="https://miniaturity.itch.io/" target="_blank"><button className="contact-button">
                   itch io
-                </button>
+                </button> </a>
               </div>
 
             </div>
