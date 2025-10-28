@@ -139,7 +139,7 @@
   min-width: 0;
 
   overflow: hidden;
-
+  
   box-sizing: border-box;
 
   gap: 2px;
@@ -170,10 +170,11 @@
   margin: 1px;
 
   width: 50%;
-  height: 100%;
+  height: auto;
   min-width: 0;   
 
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
 
   min-height: 0;
   min-width: 0;
