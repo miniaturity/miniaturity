@@ -4,6 +4,8 @@ import Squares from './components/Squares';
 import { Search, House, MessageSquare, Mail, AtSign, FolderCode, Gamepad2, Signal, CirclePlus } from 'lucide-react';
 import { TwitterLogoIcon, YoutubeLogoIcon } from '@phosphor-icons/react'
 import MetaBalls from './components/MetaBalls';
+import { LastFMComponent } from './components/LastFM';
+import { RecentTracks, TrackInner } from './components/LastFM';
 
 
 function App() {
@@ -25,10 +27,13 @@ function App() {
 }
 
 const Middle: React.FC = () => {
+  const [cachedSongs, setCachedSongs] = useState<RecentTracks | null>(null);
   const [bunny, setBunny] = useState<string>("bunny_0");
   const [location, setLocation] = useState<string>("src/home");
   const [locationIndex, setLocationIndex] = useState<number>(0);
-  const locationComponents = [<Home />];
+  const locationComponents = [
+  <Home cachedSongs={cachedSongs} setCachedSongs={setCachedSongs}/>
+];
   const locations = ["src/home", "src/blog", "src/chat", "src/guestbook"];
   
   useEffect(() => {
@@ -131,8 +136,34 @@ const Middle: React.FC = () => {
 
           </div>
 
+          <div style={{ flexGrow: "1" }}>
+
+          </div>
           
-          
+          <div className="ml-palette">
+            <div className="mlp-color" 
+            style={{ backgroundColor: "var(--l-main)"}}>
+            </div>
+            <div className="mlp-color" 
+            style={{ backgroundColor: "var(--main)"}}>
+            </div>
+            <div className="mlp-color" 
+            style={{ backgroundColor: "var(--d-main)"}}>
+            </div>
+            <div className="mlp-color" 
+            style={{ backgroundColor: "var(--border)"}}>
+            </div>
+            <div className="mlp-color" 
+            style={{ backgroundColor: "var(--s-br)"}}>
+            </div>
+            <div className="mlp-color" 
+            style={{ backgroundColor: "var(--l-bg)"}}>
+            </div>
+            <div className="mlp-color" 
+            style={{ backgroundColor: "var(--bg)"}}>
+            </div>
+          </div>
+
         </div>
 
         <div className="m-mid container">
@@ -159,8 +190,12 @@ const Middle: React.FC = () => {
 
           {locationComponents[locationIndex] || <Placeholder />}
               
-          <div style={{ flexGrow: "1" }}>
-
+          <div className="bottom-space">
+            <div className="line-container">
+              <div style={{ color: "var(--s-br)", marginLeft: "4px", userSelect: "none"}}>:3...</div>
+              <div className="line"></div>
+              <div className="line"></div>
+            </div>
           </div>
 
           <div className="mm-footer">
@@ -201,7 +236,7 @@ const Middle: React.FC = () => {
       </div>
 
       <div className="m-footer container-2">
-        {`<c> 2025 miniaturity`}
+        {`<c> 2025 miniaturity`} // {`inspired by `} &nbsp;<a href="https://aelita.neocities.org/" target="_blank" rel="noreferrer">https://aelita.neocities.org/ </a>
       </div>
 
     </div>
@@ -254,7 +289,13 @@ const Placeholder: React.FC = () => {
   )
 }
 
-const Home: React.FC = () => {
+type HomeProps = {
+  cachedSongs:  RecentTracks | null,
+  setCachedSongs: React.Dispatch<React.SetStateAction<RecentTracks | null>>,
+}
+
+
+const Home: React.FC<HomeProps> = ({ cachedSongs, setCachedSongs }) => {
   const [status, setStatus] = useState<Status>({ content: "Loading..", date: "0/0/0" });
   const [currentGif, setCurrentGif] = useState<string>("giphy_6.gif");
   const rotatingGifs = ["discdisc.gif", "giphy_6.gif"];
@@ -332,6 +373,12 @@ const Home: React.FC = () => {
           </div>
         </div>
       </div>
+
+      
+    </div>
+
+    <div className="mm-lastfm">
+      <LastFMComponent cachedSongs={cachedSongs} setCachedSongs={setCachedSongs}/>
     </div>
     </>
   )
