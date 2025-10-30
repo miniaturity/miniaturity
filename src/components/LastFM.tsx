@@ -145,7 +145,7 @@ const SongView: React.FC<SongViewProps> = ({ scrobbles, song, date }) => {
 
     <div className="c-song-sv container-2">
       <div className="cs-albumart">
-        <img src={song?.image[3]["#text"]}/>
+        <img src={song?.image[3]["#text"]} alt={song?.name || ""}/>
       </div>
       <div className="cs-desc">
         <div className="cs-name m-marq">

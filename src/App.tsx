@@ -5,8 +5,9 @@ import { Search, House, MessageSquare, Mail, AtSign, FolderCode, Gamepad2, Signa
 import { TwitterLogoIcon, YoutubeLogoIcon } from '@phosphor-icons/react'
 import MetaBalls from './components/MetaBalls';
 import { LastFMComponent } from './components/LastFM';
-import { RecentTracks, TrackInner } from './components/LastFM';
-
+import { RecentTracks } from './components/LastFM';
+import ChatBox from './components/Chatbox';
+import { Message } from './components/Chatbox';
 
 function App() {
   return (
@@ -27,14 +28,18 @@ function App() {
 }
 
 const Middle: React.FC = () => {
+  const [messages, setMessages] = useState<Message[]>([]);
   const [cachedSongs, setCachedSongs] = useState<RecentTracks | null>(null);
   const [bunny, setBunny] = useState<string>("bunny_0");
   const [location, setLocation] = useState<string>("src/home");
   const [locationIndex, setLocationIndex] = useState<number>(0);
+  
   const locationComponents = [
-  <Home cachedSongs={cachedSongs} setCachedSongs={setCachedSongs}/>
+  <Home cachedSongs={cachedSongs} setCachedSongs={setCachedSongs}/>,
+  <Placeholder />,
+  <ChatBox messages={messages} setMessages={setMessages}/>
 ];
-  const locations = ["src/home", "src/blog", "src/chat", "src/guestbook"];
+  const locations = ["src/home", "src/blog", "src/guestbook"];
   
   useEffect(() => {
     setLocationIndex(locations.indexOf(location));
@@ -79,7 +84,6 @@ const Middle: React.FC = () => {
             <img src="images/sparkle_r.png" alt="star"/>
             <img src="images/sparkle_r.png" alt="star"/>
             <img src="images/sparkle_r.png" alt="star"/>
-            <img src="images/sparkle_r.png" alt="star"/>
           </div>
 
           <div className="ml-header2 container">
@@ -94,12 +98,8 @@ const Middle: React.FC = () => {
                 <House size={12}/>
                 {` home`}
               </button>
-              <button className="nav-item" onClick={() => setLocation("src/chat")}>
-                <MessageSquare size={12}/>
-                {` chat`}
-              </button>
               <button className="nav-item" onClick={() => setLocation("src/guestbook")}>
-                <Mail size={12}/>
+                <MessageSquare size={12}/>
                 {` guestbook`}
               </button>
               <button className="nav-item" onClick={() => setLocation("src/blog")}>
@@ -192,7 +192,6 @@ const Middle: React.FC = () => {
               
           <div className="bottom-space">
             <div className="line-container">
-              <div style={{ color: "var(--s-br)", marginLeft: "4px", userSelect: "none"}}>:3...</div>
               <div className="line"></div>
               <div className="line"></div>
             </div>
@@ -202,7 +201,7 @@ const Middle: React.FC = () => {
             <img src={`images/b/${bunny}.png`} style={{ marginRight: "-30px"}} alt="me"
               onMouseEnter={handleBunnyClick} onMouseLeave={handleBunnyLetGo}
             />
-            <img src="images/r-speech-start.png" className="speech-start" alt="speech bubble"/>
+            <img src="images/r-speech-start.png" className="speech-start" alt=""/>
             <div className="speech-bubble">
               <div className="m-marq-content">
                 whatttttttttts goin on?!?!
@@ -258,7 +257,7 @@ async function fetchData(path: string) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching status");
+    console.error("Error fetching status" + error);
   }
 } 
 

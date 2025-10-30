@@ -1,28 +1,49 @@
-import { useEffect, useRef, useState } from "react";
+import { CirclePlus, Pin, Signal } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby8DlypbE-5XYq0b9flJtgWCdp76AtlqsvSa4R5VsJM9Jv-qCF_wFyMRBqARG2E6-wKqA/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGbkb84a83ej241ve_FrN6lB2kwyZhG_RGLcaicZ4nswx9kA0O2-FUUAdNZRB58rX9PQ/exec';
 
-interface Message {
+export interface Message {
   id: string,
   timestamp: string,
   username: string,
   message: string,
   parentId: string | null,
   isAdmin: boolean,
+  isPinned: boolean
 }
 
 interface MessageWithReplies extends Message {
   replies: Message[]
 }
 
-interface ChatBoxProps {
-  mainCol: string,
+const emojiMap: Record<string, string> = {
+  bunny_0: "/images/b/bunny_0.png"
+};
+
+function parseEmojis(text: string): (string | React.JSX.Element)[] {
+  const parts = text.split(/(:[a-zA-Z0-9_]+:)/g); // split by :word:
+  return parts.map((part, i) => {
+    const match = part.match(/^:([a-zA-Z0-9_]+):$/);
+    if (match) {
+      const emojiKey = match[1];
+      const emoji = emojiMap[emojiKey];
+      if (emoji) {
+        return <img key={i} src={emoji} alt={emojiKey} className="emoji" />;
+      }
+    }
+    return part;
+  });
 }
 
+interface ChatBoxProps {
+  messages: Message[]
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>
+}
 
-
-const ChatBox: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
+const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
+  const MESSAGES_PER_PAGE = 5;
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [username, setUsername] = useState('');
   const [messageText, setMessageText] = useState('');
   const [replyingTo, setReplyingTo] = useState<Message | null>(null);
@@ -31,9 +52,7 @@ const ChatBox: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    loadMessages();
-    const interval = setInterval(loadMessages, 5000);
-    return () => clearInterval(interval);
+    if (messages.length === 0) loadMessages();
   }, []);
 
   const loadMessages = async () => {
@@ -77,6 +96,8 @@ const ChatBox: React.FC = () => {
       console.error('Error sending message:', error);
       alert('Failed to send message');
     }
+
+    loadMessages();
   };
 
   const toggleThread = (messageId: string) => {
@@ -107,26 +128,161 @@ const ChatBox: React.FC = () => {
     topLevel.forEach(msg => {
       msg.replies = repliesMap.get(msg.id) || [];
       msg.replies.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
-    });
 
-    return topLevel.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+    });
+    const timeSorted = topLevel.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+
+    return timeSorted.sort((a, b) => {
+      if (!a.isPinned && !b.isPinned) return 0;
+      return a.isPinned ? 1 : -1;
+    })
   };
 
-  const MessageItem: React.FC<{ msg: Message; isReply?: boolean }> = ({ msg, isReply = false }) => {
-    
-    
+  const messagesOrganized = organizeMessages();
+  const pageCount = Math.ceil(messagesOrganized.length / MESSAGES_PER_PAGE);
+  const startIndex = (currentPage - 1) * MESSAGES_PER_PAGE;
+  const endIndex = startIndex + MESSAGES_PER_PAGE;
+  const currentMessages = messagesOrganized.slice(startIndex, endIndex);
+
+  const MessageItem: React.FC<{ msg: MessageWithReplies; isReply?: boolean; isPinned?: boolean }> = ({ msg, isReply = false, isPinned = false }) => {
+    const timestamp: string = formatDate(new Date(msg.timestamp));
+    const hasReplies = msg.replies.length > 0;
+    const expanded = expandedThreads.has(msg.id);
+
+    useEffect(() => {
+      console.log(msg);
+      console.log("is it pinned: " + msg.isPinned)
+    }, [])
+
     return (
-      <div className={isReply ? `c-message` : `c-reply`}>
-        
+      <div className={`c-message ${isReply ? `reply` : `m`}`}>
+        <div className="cm-author">
+          {msg.isPinned && <Pin size={16} style={{marginRight: "2px"}}/>}
+          <span className="cma-name">{isReply ? `↪ ${msg.username}`: msg.username}</span>
+          {msg.isAdmin && <span className="cma-admin">web</span>}
+          <div className="line-container">
+            <div className="line" style={{ backgroundColor: "var(--main)", flexGrow: "0" }}></div>
+          </div>
+          <div className="cma-time">{timestamp}</div>
+        </div>
+        <div className="cm-body">
+          {parseEmojis(msg.message)}
+        </div>
+        <div className="cm-actions">
+          
+          {(!isReply) && <button onClick={() => setReplyingTo(msg)} disabled={msg.isPinned} className="cm-reply">reply</button>}
+          {hasReplies && (
+            <button onClick={() => toggleThread(msg.id)} className="cm-treply">
+              {expanded ? "hide replies" : "view replies"}
+            </button>
+          )}
+        </div>
+
+        {expanded && hasReplies && (
+          <div className="cm-replies">
+            {msg.replies.map((r) => (
+              <MessageItem key={r.id} msg={{ ...r, replies: [] }} isReply />
+            ))}
+          </div>
+        )}
       </div>
     )
   }
 
   return (
     <>
-    
+      <div className="chatbox">
+        <div className="mmm-header container c-header">
+          <div>chat</div>
+          <div className="line-container">
+            <div className="line"></div>
+            <div className="line"></div>
+          </div>
+          <div className="icon-row">
+              <Signal size={16} />
+              <CirclePlus size={16} />
+          </div>
+        </div>
+        <div className="c-messages container-4">
+          {loading ? <div className="c-loading"> loading.. </div> : (
+            currentMessages.map((msg) => <MessageItem key={msg.id} msg={msg} />
+            )
+          )}
+
+          
+
+          <div ref={messagesEndRef} className="cm-end"></div>
+          <div className="cm-pages">
+            <div className="line-container">
+              <div className="line" style={{ backgroundColor: "var(--main)"}}></div>
+            </div>
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              className="cmp-btn"
+            >
+              {`<`}
+            </button>
+
+            <span className="cmp-info">
+              {currentPage}/{pageCount || 1}
+            </span>
+
+            <button
+              disabled={currentPage === pageCount}
+              onClick={() => setCurrentPage(p => Math.min(pageCount, p + 1))}
+              className="cmp-btn"
+            >
+              {`>`}
+            </button>
+            <div className="line-container">
+              <div className="line" style={{ backgroundColor: "var(--main)"}}></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="c-input">
+          {replyingTo && (
+            <div className="ci-replying">
+              replying to <span>{replyingTo.username}</span>
+              <button onClick={() => setReplyingTo(null)}>cancel</button>
+            </div>
+          )}
+          
+          <div className="ci-fields container-2">
+            <input
+              type="text"
+              placeholder="name"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="cif-name"
+            />
+            <textarea
+              placeholder="message"
+              value={messageText}
+              onChange={(e) => setMessageText(e.target.value)}
+              className="cif-message"
+            />
+            <button onClick={sendMessage} className="cif-send">send</button>
+          </div>
+          
+        </div>
+      </div>    
     </>
   )
+}
+
+function formatDate(date: Date): string {
+  const pad = (num: number) => num.toString().padStart(2, "0");
+
+  const month = pad(date.getMonth() + 1); 
+  const day = pad(date.getDate());
+  const year = date.getFullYear();
+
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+
+  return `${month}/${day}/${year} - ${hours}:${minutes}`;
 }
 
 export default ChatBox;
