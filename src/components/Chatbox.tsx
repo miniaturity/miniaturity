@@ -140,7 +140,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
       if (a.isPinned && b.isPinned) {
         return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
       }
-      return a.isPinned ? 1 : -1;
+      return a.isPinned ? -1 : 1;
     })
   };
 
