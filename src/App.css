@@ -785,6 +785,29 @@
   }
 }
 
+.c-replying {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--main);
+  color: var(--c-bg);
+  justify-self: flex-end;
+  padding: 4px;
+  justify-content: space-between;
+  & button {
+    all: unset;
+    background-color: var(--l-main);
+    
+    height: auto;
+    margin: -4px;
+    padding: 4px;
+    &:hover {
+      cursor: pointer;
+    }
+    &:focus {
+      border: 1px solid var(--c-bg);
+    }
+  }
+}
 
 .t-artist {
   background-color: var(--main);

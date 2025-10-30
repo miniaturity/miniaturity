@@ -1,7 +1,7 @@
 import { CirclePlus, Pin, Signal } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGbkb84a83ej241ve_FrN6lB2kwyZhG_RGLcaicZ4nswx9kA0O2-FUUAdNZRB58rX9PQ/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFbFfUFshPinkdPbwQ4WQ_fdP1vRWT3_JqbX20VLjYQtScy4iQaM7pi0NLO4a9E-ca5g/exec';
 
 export interface Message {
   id: string,
@@ -43,6 +43,7 @@ interface ChatBoxProps {
 
 const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
   const MESSAGES_PER_PAGE = 5;
+  const [sending, setSending] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [username, setUsername] = useState('');
   const [messageText, setMessageText] = useState('');
@@ -52,7 +53,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (messages.length === 0) loadMessages();
+    loadMessages();
   }, []);
 
   const loadMessages = async () => {
@@ -75,6 +76,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
 
     const sanitizedUsername = username.trim().substring(0, 50);
     const sanitizedMessage = messageText.trim().substring(0, 1000);
+    setSending(true);
 
     try {
       const response = await fetch(SCRIPT_URL, {
@@ -90,6 +92,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
       if (result.status === 'success') {
         setMessageText('');
         setReplyingTo(null);
+        setSending(false);
         loadMessages();
       }
     } catch (error) {
@@ -134,6 +137,9 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
 
     return timeSorted.sort((a, b) => {
       if (!a.isPinned && !b.isPinned) return 0;
+      if (a.isPinned && b.isPinned) {
+        return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+      }
       return a.isPinned ? 1 : -1;
     })
   };
@@ -144,15 +150,10 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
   const endIndex = startIndex + MESSAGES_PER_PAGE;
   const currentMessages = messagesOrganized.slice(startIndex, endIndex);
 
-  const MessageItem: React.FC<{ msg: MessageWithReplies; isReply?: boolean; isPinned?: boolean }> = ({ msg, isReply = false, isPinned = false }) => {
+  const MessageItem: React.FC<{ msg: MessageWithReplies; isReply?: boolean }> = ({ msg, isReply = false }) => {
     const timestamp: string = formatDate(new Date(msg.timestamp));
     const hasReplies = msg.replies.length > 0;
     const expanded = expandedThreads.has(msg.id);
-
-    useEffect(() => {
-      console.log(msg);
-      console.log("is it pinned: " + msg.isPinned)
-    }, [])
 
     return (
       <div className={`c-message ${isReply ? `reply` : `m`}`}>
@@ -163,17 +164,17 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
           <div className="line-container">
             <div className="line" style={{ backgroundColor: "var(--main)", flexGrow: "0" }}></div>
           </div>
-          <div className="cma-time">{timestamp}</div>
+          <div className="cma-time">{!msg.isPinned ? timestamp : "pinned"}</div>
         </div>
         <div className="cm-body">
           {parseEmojis(msg.message)}
         </div>
         <div className="cm-actions">
           
-          {(!isReply) && <button onClick={() => setReplyingTo(msg)} disabled={msg.isPinned} className="cm-reply">reply</button>}
+          {(!isReply) && <button onClick={() => setReplyingTo(msg)} disabled={msg.isPinned || sending} className="cm-reply">reply</button>}
           {hasReplies && (
             <button onClick={() => toggleThread(msg.id)} className="cm-treply">
-              {expanded ? "hide replies" : "view replies"}
+              {expanded ? `hide replies (${msg.replies.length})` : `view replies (${msg.replies.length})`}
             </button>
           )}
         </div>
@@ -243,8 +244,8 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
 
         <div className="c-input">
           {replyingTo && (
-            <div className="ci-replying">
-              replying to <span>{replyingTo.username}</span>
+            <div className="c-replying">
+              replying to&nbsp;{replyingTo.username}
               <button onClick={() => setReplyingTo(null)}>cancel</button>
             </div>
           )}
@@ -263,7 +264,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
               onChange={(e) => setMessageText(e.target.value)}
               className="cif-message"
             />
-            <button onClick={sendMessage} className="cif-send">send</button>
+            <button onClick={sendMessage} className="cif-send" disabled={sending}>send</button>
           </div>
           
         </div>
