@@ -327,12 +327,12 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
   }, [spinDuration]);
 
   return (
-    <div ref={cursorRef} className="target-cursor-wrapper">
-      <div ref={dotRef} className="target-cursor-dot" />
-      <div className="target-cursor-corner corner-tl" />
-      <div className="target-cursor-corner corner-tr" />
-      <div className="target-cursor-corner corner-br" />
-      <div className="target-cursor-corner corner-bl" />
+    <div ref={cursorRef} className="target-cursor-wrapper tc">
+      <div ref={dotRef} className="target-cursor-dot tc" />
+      <div className="target-cursor-corner corner-tl tc" />
+      <div className="target-cursor-corner corner-tr tc" />
+      <div className="target-cursor-corner corner-br tc" />
+      <div className="target-cursor-corner corner-bl tc" />
     </div>
   );
 };

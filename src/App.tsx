@@ -8,6 +8,7 @@ import { LastFMComponent } from './components/LastFM';
 import { RecentTracks } from './components/LastFM';
 import ChatBox from './components/Chatbox';
 import { Message } from './components/Chatbox';
+import TargetCursor from './components/TargetCursor';
 
 function App() {
   return (
@@ -211,10 +212,14 @@ const Middle: React.FC = () => {
         </div>
 
         <div className="m-sider container">
+          <TargetCursor 
+            hideDefaultCursor={false}
+            spinDuration={5}
+          />
           <div className="mr-header container">
             the gooup
           </div>
-          <div className="mr-balls container-2 ">
+          <div className="mr-balls container-2 cursor-target">
             
             <MetaBalls
               color="#f18d87"
@@ -230,7 +235,28 @@ const Middle: React.FC = () => {
             />
 
           </div>
-  
+
+          <div style={{ flexGrow: "1" }}></div>
+
+          <div className="mr-buttons">
+            <div className="mrb-1">
+              <a href="https://mayf.pink" target="_blank" rel="noreferrer" className="cursor-target">
+                <img src="https://mayf.pink/data/main/buttons/__mayf.gif" style={{ height: "31px", width: "88px"}} />
+              </a>
+              <a href="https://reidlab.pink" target="_blank" rel="noreferrer" className="cursor-target">
+                <img src="https://mayf.pink/data/main/buttons/reidlab.gif" style={{ height: "31px", width: "88px"}} />
+              </a>
+            </div>
+            
+            <div className="mrb-2">
+              <a href="https://gdbrowser.com/76767195" target="_blank" rel="noreferrer" className="cursor-target">
+                <img src="https://reidlab.pink/_astro/showmeyourheart.D0qV551_.gif" style={{ height: "31px", width: "88px"}} />
+              </a>
+              <a href="https://corru.observer" target="_blank" rel="noreferrer" className="cursor-target">
+                <img src="https://ivrry.nekoweb.org/assets/images/buttons/corruobserver.gif" style={{ height: "31px", width: "88px"}} />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 

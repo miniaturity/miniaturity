@@ -10,6 +10,9 @@
   --l-main: #faa8a3;
 }
 
+body:has(.m-sider:hover) .tc {
+  opacity: 1;
+}
 
 .main {
   background-color: var(--bg);
@@ -809,6 +812,34 @@
   }
 }
 
+.mr-buttons {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 2px;
+  transition: 0.3s ease-in-out;
+
+  &:hover {
+    & img {
+      transition: 0.3s ease-in-out;
+      filter: grayscale(1);
+      &:hover {
+        filter: none;
+        transform: scale(1.1);
+        z-index: 99;
+      }
+    }
+  }
+}
+
+.mrb-1,
+.mrb-2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 4px;
+}
+
 .t-artist {
   background-color: var(--main);
   color: var(--c-bg);
@@ -861,6 +892,18 @@ a {
 @font-face {
   font-family: "barcode";
   src: url(assets/fonts/BarcodeFont.ttf);
+}
+
+@media only screen and (max-width: 1550px) {
+  .mr-buttons {
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .mrb-1,
+  .mrb-2 {
+    margin: none;
+  }
 }
 
 @media only screen and (max-width: 600px) {

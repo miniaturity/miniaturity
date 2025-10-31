@@ -1,5 +1,15 @@
 @import url(../App.css);
 
+.target-cursor-wrapper,
+.target-cursor-dot,
+.target-cursor-corner,
+.corner-tl,
+.corner-tr,
+.corner-br,
+.corner-bl {
+  opacity: 0;
+}
+
 .target-cursor-wrapper {
   position: fixed;
   top: 0;
