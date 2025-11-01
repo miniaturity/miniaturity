@@ -1,5 +1,5 @@
 import { CirclePlus, Pin, Signal } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLGOzJnzEr-QG9mKwJxlK6TAEGSPb67rxzvdstGpVKJ2V2kQUot3O40H2_dh2glnE6qg/exec';
 
@@ -53,11 +53,8 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
   const [expandedThreads, setExpandedThreads] = useState<Set<string>>(new Set());
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    loadMessages();
-  }, []);
-
-  const loadMessages = async () => {
+  
+  const loadMessages = useCallback(async () => {
     try {
       const response = await fetch(`${SCRIPT_URL}?limit=100`);
       const data = await response.json();
@@ -67,7 +64,12 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
       console.error('Error loading messages:', error);
       setLoading(false);
     }
-  };
+  }, [setMessages]);
+
+  useEffect(() => {
+    loadMessages();
+  }, [loadMessages]);
+
 
   const sendMessage = async () => {
     if (!username.trim() || !messageText.trim()) {
