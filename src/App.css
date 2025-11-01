@@ -695,6 +695,29 @@ body:has(.m-sider:hover) .tc {
   }
 }
 
+.cma-liked {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  margin: 6px;
+  user-select: none;
+  transition: 0.3s ease-in-out;
+  &:hover {
+    filter: brightness(1.2);
+  }
+}
+
+.cmal-detail {
+  opacity: 0;
+  transition: 0.3s ease-in-out;
+}
+
+body:has(.like:hover) .cmal-detail {
+  opacity: 1;
+}
+
 .cm-body {
   display: flex;
   align-items: center;
@@ -852,6 +875,14 @@ a {
   color: var(--l-main);
 }
 
+a:not(:has(img))[target='_blank']::after {
+  font-family: "Material Icons";
+  content: 'open_in_new';
+  vertical-align: bottom;
+}
+
+
+
 * {
   scrollbar-width: auto;
   
@@ -881,6 +912,11 @@ a {
   100% {
     transform: translateX(-100%); 
   }
+}
+
+@font-face {
+  font-family: "Material Icons";
+  src: url(assets/fonts/MaterialIcons-Regular.ttf);
 }
 
 

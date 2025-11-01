@@ -1,7 +1,7 @@
 import { CirclePlus, Pin, Signal } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFbFfUFshPinkdPbwQ4WQ_fdP1vRWT3_JqbX20VLjYQtScy4iQaM7pi0NLO4a9E-ca5g/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLGOzJnzEr-QG9mKwJxlK6TAEGSPb67rxzvdstGpVKJ2V2kQUot3O40H2_dh2glnE6qg/exec';
 
 export interface Message {
   id: string,
@@ -10,7 +10,8 @@ export interface Message {
   message: string,
   parentId: string | null,
   isAdmin: boolean,
-  isPinned: boolean
+  isPinned: boolean,
+  isLiked: boolean
 }
 
 interface MessageWithReplies extends Message {
@@ -170,7 +171,8 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
           {parseEmojis(msg.message)}
         </div>
         <div className="cm-actions">
-          
+          {msg.isLiked && <div className="cma-liked"><span className="like">❤</span> <span className="cmal-detail">liked by mini</span></div>}
+          <div style={{ flexGrow: "1" }}></div>
           {(!isReply) && <button onClick={() => setReplyingTo(msg)} disabled={msg.isPinned || sending} className="cm-reply">reply</button>}
           {hasReplies && (
             <button onClick={() => toggleThread(msg.id)} className="cm-treply">
