@@ -171,7 +171,9 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
           {parseEmojis(msg.message)}
         </div>
         <div className="cm-actions">
-          {msg.isLiked && <div className="cma-liked"><span className="like">❤</span> <span className="cmal-detail">liked by mini</span></div>}
+          {msg.isLiked && <div className="cma-liked"><span className="like">❤<span className="cmal-detail">liked by mini</span></span>
+           
+           </div>}
           <div style={{ flexGrow: "1" }}></div>
           {(!isReply) && <button onClick={() => setReplyingTo(msg)} disabled={msg.isPinned || sending} className="cm-reply">reply</button>}
           {hasReplies && (

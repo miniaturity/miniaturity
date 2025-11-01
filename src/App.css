@@ -709,14 +709,18 @@ body:has(.m-sider:hover) .tc {
   }
 }
 
+.like:hover {
+  & span {
+    opacity: 1;
+  }
+}
+
 .cmal-detail {
   opacity: 0;
   transition: 0.3s ease-in-out;
+  margin-left: 4px;
 }
 
-body:has(.like:hover) .cmal-detail {
-  opacity: 1;
-}
 
 .cm-body {
   display: flex;
