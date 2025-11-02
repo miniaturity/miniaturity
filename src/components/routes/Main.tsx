@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Message } from '../Chatbox';
 import ChatBox from "../Chatbox";
 import { RecentTracks, LastFMComponent } from "../LastFM";
-import { Search, House, MessageSquare, AtSign, FolderCode, Gamepad2, Signal, CirclePlus } from 'lucide-react';
+import { Search, House, MessageSquare, AtSign, FolderCode, Gamepad2, Signal, CirclePlus, Braces, X, Minus } from 'lucide-react';
 import { TwitterLogoIcon, YoutubeLogoIcon } from '@phosphor-icons/react'
 import TargetCursor from "../TargetCursor";
 import MetaBalls from "../MetaBalls";
 
 
-const locations = ["src/home", "src/blog", "src/guestbook"];
+const locations = ["src/home", "src/guestbook", "src/about"];
 const blurbs = ["hi lol", "whatttts goin on?!", "waow", "HUngry", "#indonesianAndProud", "[object Object]"]
 
 const Main: React.FC = () => {
@@ -21,8 +21,8 @@ const Main: React.FC = () => {
 
   const locationComponents = [
     <Home cachedSongs={cachedSongs} setCachedSongs={setCachedSongs}/>,
-    <Blog />,
-    <ChatBox messages={messages} setMessages={setMessages}/>
+    <ChatBox messages={messages} setMessages={setMessages}/>,
+    <About />
   ];
 
   useEffect(() => {
@@ -95,15 +95,14 @@ const Main: React.FC = () => {
                   <House size={12}/>
                   {` home`}
                 </button>
+                <button className="nav-item" onClick={() => setLocation("src/about")}>
+                  <Braces size={12}/>
+                  {` about`}
+                </button>
                 <button className="nav-item" onClick={() => setLocation("src/guestbook")}>
                   <MessageSquare size={12}/>
                   {` guestbook`}
                 </button>
-                <button className="nav-item" onClick={() => setLocation("src/blog")}>
-                    <AtSign size={12}/>
-                    {` blog`}
-                </button>
-                
               </div>
 
               <div className="nav-header container">
@@ -410,21 +409,96 @@ const Home: React.FC<HomeProps> = ({ cachedSongs, setCachedSongs }) => {
   )
 }
 
-const Blog: React.FC = () => {
-
+const About: React.FC = () => {
 
   return (
     <>
-    <div className="mm-blog-header">
-      <div className="mmb-header">
-        blog posts
+    <div className="mm-window">
+      <div className="mma-header">
+        <div>about me</div>
+        <div className="icon-row">
+          <Minus size={16}/>
+          <X size={16}/>
+        </div>
       </div>
-      <div className="mmb-body container-2">
+      <div className="line-2" style={{ marginTop: "2px" }}></div> 
+      <div className="mma-body">
 
+        <div className="mma-about">
+          <div className="mma-pfp">
+            <img src="/images/catpfp.png" alt=""/>
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>NAME</td>
+                <td>mini</td>
+              </tr>
+              <tr>
+                <td>AGE</td>
+                <td>minor</td>
+              </tr>
+              <tr>
+                <td>IS</td>
+                <td>bunny</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <fieldset className="mma-albums">
+          <legend> fav albums </legend>
+          <div className="album-row">
+            <img src="/images/a/mm.png" alt=""
+            data-title="<b>'Museum Music'</b> <br /> by Edward Skeletrix"
+            />
+            <img src="/images/a/rw.jpg" alt=""
+            data-title="<b>'re:wired'</b> <br /> by kuru"
+            />
+            <img src="/images/a/stf.jpeg" alt=""
+            data-title="<b>'Stay True Forever'</b> <br /> by kuru"
+            />
+            <img src="/images/a/um.jpg" alt=""
+            data-title="<b>'Unmusique'</b> <br /> by Lucy Bedroque"
+            />
+            <img src="/images/a/jz.jpeg" alt=""
+            data-title="<b>'弓长张'</b> <br /> by jackzebra"
+            />
+            <img src="/images/a/e.png" alt=""
+            data-title="<b>'E'</b> <br /> by ecco2k"
+            />
+            <img src="/images/a/fdlv.jpeg" alt=""
+            data-title="<b>'Fête de la Vanille'</b> <br /> by Lucy Bedroque"
+            />
+            <img src="/images/a/i.jpeg" alt=""
+            data-title="<b>'install'</b> <br /> by xaviersobased"
+            />
+            
+          </div>
+        </fieldset>
+
+        <div className="mm-window">
+          
+          <div className="mma-header">
+            <div>who are you ?!?!</div>
+            <div className="icon-row">
+              <Minus size={16}/>
+              <X size={16}/>
+            </div>
+          </div>
+          <div className="line-2" style={{ marginTop: "2px" }} /> 
+          <div className="mma-body">
+            <div className="mma-about-me">
+              i am miniaturity.. a web/game dev from NY! i am currently a high school student and studying to be a comp sci major. i speak typescript, java, c#, and python. ummmm ok bye 
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <div className="line-2" style={{ marginTop: "2px", margin: "-16px 16px 16px 16px", height: "1px" }}></div> 
     </>
   )
 }
+
 
 export default Main;

@@ -2,10 +2,12 @@ import './App.css';
 import Squares from './components/Squares';
 import Main from './components/routes/Main';
 import { BrowserRouter, Routes, Route } from "react-router";
+import Tooltip from './components/Tooltip';
 
 function App() {
   return (
     <>
+      <Tooltip />
       <Squares 
         speed={0.5} 
         squareSize={40}

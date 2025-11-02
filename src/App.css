@@ -10,6 +10,18 @@
   --l-main: #faa8a3;
 }
 
+.tooltip {
+  position: fixed;
+  max-width: 320px;
+  border: 1px var(--main) solid;
+  background-color: var(--c-bg);
+  font-family: "w95", Arial, Helvetica, sans-serif;
+  color: var(--main);
+  padding: 8px;
+  z-index: 99;
+  pointer-events: none;
+}
+
 body:has(.m-sider:hover) .tc {
   opacity: 1;
 }
@@ -115,6 +127,12 @@ body {
   margin: 0 4px 0 4px;
   flex-grow: 1;
   background-color: var(--s-br);
+}
+
+.line-2 {
+  height: 1px;
+  flex-grow: 1;
+  background-color: var(--main);
 }
 
 .m-marq {
@@ -587,6 +605,7 @@ body {
   flex-direction: column;
   gap: 2px;
   flex-grow: 1;
+  min-height: 600px;
   height: 100%;
 }
 
@@ -894,6 +913,124 @@ body {
   border: 2px solid var(--main);
   background-color: var(--main);
   color: var(--c-bg);
+}
+
+.mm-window {
+  display: flex;
+  flex-direction: column;
+  margin: 16px;
+
+ 
+}
+
+.mma-header {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 8px 8px 4px 8px;
+  background-color: var(--s-br);
+  color: var(--main);
+  clip-path: polygon(0 15%, 2% 0, 98% 0, 100% 17%, 100% 100%, 0 100%);
+}
+
+.mma-body {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--d-s-br);
+  color: var(--main);
+
+  & table {
+    color: var(--main);
+    margin: 8px 0 8px 0;
+    width: 100%;
+    & tbody {
+      & tr {
+        & td {
+          padding: 8px;
+        }
+        & td:nth-child(1) {
+          border-left: 1px solid var(--main);
+          background-color: var(--border);
+        }
+        & td:nth-child(2) {
+          background-color: var(--bg);
+        }
+      }
+    }
+  }
+}
+
+.mma-pfp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+
+  & img {
+    height: 100px;
+    border: 2px solid var(--main);
+  }
+}
+
+.mma-about {
+  display: flex;
+  flex-direction: row;
+}
+
+.mma-about-me {
+  padding: 8px;
+  background-color: var(--c-bg);
+  text-align: justify;
+  text-align-last: justify;
+  text-justify: inter-word;
+}
+
+.mma-albums {
+  display: flex;
+  border: 1px solid var(--border);
+  margin: 8px;
+  max-width: 450px;
+
+  & legend {
+    color: var(--main);
+    margin: 2px;
+  }
+}
+
+
+
+.album-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  perspective: 800px;
+  width: 100%;
+  margin-left: -5px;
+
+  &:hover { 
+    img:not(:hover) {
+      /* if you see this ivy THANK YOU for the filter.. */
+      filter: blur(1px) saturate(0%) brightness(50%) invert(11%) sepia(42%) saturate(397%) hue-rotate(199deg) brightness(97%) contrast(98%);
+    }
+  }
+
+  & img {
+    width: 75px;
+    height: 75px;
+    transform: rotateY(60deg);
+    transform-origin: 50% 100%;
+    transition: transform 0.2s ease-in-out;
+    margin-left: -45px;
+    &:first-child {
+      margin-left: -10px;
+    }
+
+    &:hover {
+      /* and also the transform lol.... erm.. */
+      transform: translateY(-25px) rotateY(40deg) rotateZ(-10deg) translateX(-15px);
+      z-index: 10;
+    }
+  }
 }
 
 .t-artist {

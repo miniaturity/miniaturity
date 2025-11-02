@@ -163,7 +163,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
         <div className="cm-author">
           {msg.isPinned && <Pin size={16} style={{marginRight: "2px"}}/>}
           <span className="cma-name">{isReply ? `↪ ${msg.username}`: msg.username}</span>
-          {msg.isAdmin && <span className="cma-admin">web</span>}
+          {msg.isAdmin && <span className="cma-admin" data-title="webmaster">web</span>}
           <div className="line-container">
             <div className="line" style={{ backgroundColor: "var(--main)", flexGrow: "0" }}></div>
           </div>
@@ -211,7 +211,11 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
           </div>
         </div>
         <div className="c-messages container-4">
-          {loading ? <div className="c-loading"> loading.. </div> : (
+          {loading ? 
+          <div className="c-loading"
+          data-title="<b>still waiting?</b> <br /> you may be rate limited, reload!"
+          > loading.. </div> 
+          : (
             currentMessages.map((msg) => <MessageItem key={msg.id} msg={msg} />
             )
           )}
