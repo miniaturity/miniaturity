@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Message } from '../Chatbox';
 import ChatBox from "../Chatbox";
 import { RecentTracks, LastFMComponent } from "../LastFM";
-import { Search, House, MessageSquare, AtSign, FolderCode, Gamepad2, Signal, CirclePlus, Braces, X, Minus } from 'lucide-react';
+import { Search, House, MessageSquare, FolderCode, Gamepad2, Signal, CirclePlus, Braces, X, Minus } from 'lucide-react';
 import { TwitterLogoIcon, YoutubeLogoIcon } from '@phosphor-icons/react'
 import TargetCursor from "../TargetCursor";
 import MetaBalls from "../MetaBalls";
 
 
 const locations = ["src/home", "src/guestbook", "src/about"];
-const blurbs = ["hi lol", "whatttts goin on?!", "waow", "HUngry", "#indonesianAndProud", "[object Object]"]
+const blurbs = ["hi lol", "whatttts goin on?!", "waow", "HUngry", "#indonesianAndProud", "[object Object]", 
+  "my favorite food is pastel goreng", "my favorite dessert is es teler", "please leave a message in my guestbook!"]
 
 const Main: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);

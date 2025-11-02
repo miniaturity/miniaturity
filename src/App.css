@@ -989,7 +989,6 @@ body {
   display: flex;
   border: 1px solid var(--border);
   margin: 8px;
-  max-width: 450px;
 
   & legend {
     color: var(--main);
@@ -1007,9 +1006,9 @@ body {
   width: 100%;
   margin-left: -5px;
 
+
   &:hover { 
     img:not(:hover) {
-      /* if you see this ivy THANK YOU for the filter.. */
       filter: blur(1px) saturate(0%) brightness(50%) invert(11%) sepia(42%) saturate(397%) hue-rotate(199deg) brightness(97%) contrast(98%);
     }
   }
@@ -1026,7 +1025,7 @@ body {
     }
 
     &:hover {
-      /* and also the transform lol.... erm.. */
+      
       transform: translateY(-25px) rotateY(40deg) rotateZ(-10deg) translateX(-15px);
       z-index: 10;
     }
@@ -1114,6 +1113,12 @@ a:not(:has(img))[target='_blank']::after {
   .mrb-2 {
     margin: none;
   }
+
+  .album-row img { 
+    height: 60px; 
+    width: 60px; 
+    margin-left: -35px;
+  }
 }
 
 @media only screen and (max-width: 600px) {
@@ -1144,4 +1149,5 @@ a:not(:has(img))[target='_blank']::after {
     height: auto;
     overflow-y: scroll;
   }
+  
 }
