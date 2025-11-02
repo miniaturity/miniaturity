@@ -23,7 +23,7 @@ body {
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 
   height: 100vh;
@@ -49,7 +49,7 @@ body {
 
   max-width: 800px;
   min-width: 350px;
-  max-height: 1200px;
+  max-height: 780px;
   width: 50%;
   height: 95%;
 
@@ -61,6 +61,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  margin: 16px;
   padding: 1px;
 }
 
@@ -138,6 +139,16 @@ body {
   display: inline-block;
   width: 100%;
   animation: marquee-scroll 15s linear infinite;
+
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+.blurb-content {
+  display: inline-block;
+  width: 100%;
+  animation: marquee-scroll 10s linear infinite;
 
   &:hover {
     animation-play-state: paused;
@@ -515,7 +526,7 @@ body {
 }
 
 .mlp-color {
-  height: auto;
+  height: 100%;
   flex-grow: 1;
 }
 
@@ -705,7 +716,7 @@ body {
   align-items: center;
   gap: 4px;
   font-size: 0.7rem;
-  margin: 6px;
+  margin: 0 6px 0 6px;
   user-select: none;
   transition: 0.3s ease-in-out;
   &:hover {
@@ -871,6 +882,20 @@ body {
   margin: 4px;
 }
 
+
+
+.mmb-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 6px;
+  padding: 8px;
+  border-radius: 6px 6px 0px 0px;
+  border: 2px solid var(--main);
+  background-color: var(--main);
+  color: var(--c-bg);
+}
+
 .t-artist {
   background-color: var(--main);
   color: var(--c-bg);
@@ -881,6 +906,10 @@ a {
   text-decoration: underline;
   cursor: pointer;
   color: var(--l-main);
+}
+
+.na {
+  all: unset,
 }
 
 a:not(:has(img))[target='_blank']::after {
@@ -954,10 +983,16 @@ a:not(:has(img))[target='_blank']::after {
   .main {
     height: auto;
     overflow-y: scroll;
+    justify-content: center;
   }
 
+  .mr-buttons {
+    flex-direction: row;
+  }
+  
   .middle {
-    height: fit-content;
+    height: 100%;
+    max-height: none;
     overflow-y: scroll;
   }
 

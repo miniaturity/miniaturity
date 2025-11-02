@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Message } from '../Chatbox';
 import ChatBox from "../Chatbox";
 import { RecentTracks, LastFMComponent } from "../LastFM";
@@ -9,6 +9,7 @@ import MetaBalls from "../MetaBalls";
 
 
 const locations = ["src/home", "src/blog", "src/guestbook"];
+const blurbs = ["hi lol", "whatttts goin on?!", "waow", "HUngry", "#indonesianAndProud", "[object Object]"]
 
 const Main: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -16,22 +17,35 @@ const Main: React.FC = () => {
   const [bunny, setBunny] = useState<string>("bunny_0");
   const [location, setLocation] = useState<string>("src/home");
   const [locationIndex, setLocationIndex] = useState<number>(0);
+  const [currBlurb, setCurrBlurb] = useState<number>(0);
 
   const locationComponents = [
     <Home cachedSongs={cachedSongs} setCachedSongs={setCachedSongs}/>,
-    <Placeholder />,
+    <Blog />,
     <ChatBox messages={messages} setMessages={setMessages}/>
   ];
+
+  useEffect(() => {
+    const blurbTimer = setInterval(() => {
+      getRandomBlurb();
+
+      return () => clearInterval(blurbTimer);
+    }, 10000);
+  }, [])
 
   useEffect(() => {
     setLocationIndex(locations.indexOf(location));
   }, [location]);
 
-  const handleBunnyClick = (): void => {
+  const getRandomBlurb: () => void = () => {
+    setCurrBlurb(Math.floor(Math.random() * (blurbs.length)));
+  }
+
+  const handleBunnyClick: () => void = () => {
     setBunny("bunny_1")
   }
 
-  const handleBunnyLetGo = (): void => {
+  const handleBunnyLetGo: () => void = () => {
     setBunny("bunny_0");
   }
 
@@ -86,8 +100,8 @@ const Main: React.FC = () => {
                   {` guestbook`}
                 </button>
                 <button className="nav-item" onClick={() => setLocation("src/blog")}>
-                  <AtSign size={12}/>
-                  {` blog`}
+                    <AtSign size={12}/>
+                    {` blog`}
                 </button>
                 
               </div>
@@ -172,13 +186,11 @@ const Main: React.FC = () => {
             </div>
 
             {locationComponents[locationIndex] || <Placeholder />}
-                
-            <div className="bottom-space">
-              <div className="line-container">
-                <div className="line"></div>
-                <div className="line"></div>
-              </div>
+
+            <div style={{ flexGrow: "1" }}>
+
             </div>
+          
 
             <div className="mm-footer">
               <img src={`images/b/${bunny}.png`} style={{ marginRight: "-30px"}} alt="me"
@@ -186,8 +198,8 @@ const Main: React.FC = () => {
               />
               <img src="images/r-speech-start.png" className="speech-start" alt=""/>
               <div className="speech-bubble">
-                <div className="m-marq-content">
-                  whatttttttttts goin on?!?!
+                <div className="blurb-content">
+                  {blurbs[currBlurb]}
                 </div>
               </div>
             </div>
@@ -222,6 +234,9 @@ const Main: React.FC = () => {
 
             <div className="mr-buttons">
               <div className="mrb-1">
+                <a href="https://aelita.neocities.org/" target="_blank" rel="noreferrer" className="cursor-target">
+                  <img src="https://file.garden/ZF_HpShvAk-Bo5va/neocities/aelita/button1.png" alt="" style={{ height: "31px", width: "88px"}}/>
+                </a>
                 <a href="https://mayf.pink" target="_blank" rel="noreferrer" className="cursor-target">
                   <img alt="" src="https://mayf.pink/data/main/buttons/__mayf.gif" style={{ height: "31px", width: "88px"}} />
                 </a>
@@ -236,6 +251,9 @@ const Main: React.FC = () => {
                 </a>
                 <a href="https://corru.observer" target="_blank" rel="noreferrer" className="cursor-target">
                   <img alt="" src="https://ivrry.nekoweb.org/assets/images/buttons/corruobserver.gif" style={{ height: "31px", width: "88px"}} />
+                </a>
+                <a href="https://spax.zone" target="_blank" rel="noreferrer" className="cursor-target">
+                  <img alt="" src="https://reidlab.pink/_astro/spax.DJJo1OBg.gif" style={{ height: "31px", width: "88px"}}/>
                 </a>
               </div>
             </div>
@@ -387,6 +405,23 @@ const Home: React.FC<HomeProps> = ({ cachedSongs, setCachedSongs }) => {
 
     <div className="mm-lastfm">
       <LastFMComponent cachedSongs={cachedSongs} setCachedSongs={setCachedSongs}/>
+    </div>
+    </>
+  )
+}
+
+const Blog: React.FC = () => {
+
+
+  return (
+    <>
+    <div className="mm-blog-header">
+      <div className="mmb-header">
+        blog posts
+      </div>
+      <div className="mmb-body container-2">
+
+      </div>
     </div>
     </>
   )
