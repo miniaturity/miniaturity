@@ -437,7 +437,7 @@ const About: React.FC = () => {
               </tr>
               <tr>
                 <td>AGE</td>
-                <td>minor</td>
+                <td>???</td>
               </tr>
               <tr>
                 <td>IS</td>
