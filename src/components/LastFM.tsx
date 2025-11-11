@@ -1,5 +1,5 @@
 import { animated, easings, useSpring } from "@react-spring/web"
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Signal, CirclePlus } from "lucide-react";
 
 export interface RecentTracks {
@@ -68,26 +68,7 @@ export const LastFMComponent: React.FC<LastFMComponentProps> = ({ cachedSongs, s
   const [date, setDate] = useState<string>("loading");
   const [rateLimit, setRateLimit] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (!cachedSongs)
-      handleFetch();
-    else
-      setRecentSongs(cachedSongs);
-  }, [])
-
-  useEffect(() => {
-    const recenttrack = recentSongs?.recenttracks.track[0];
-    setSong(recenttrack || null);
-    setScrobbles(Number(recentSongs?.recenttracks['@attr'].total) || 0);
-    setDate(recenttrack?.['@attr']?.nowplaying ? "playing now" : recentSongs?.recenttracks.track[0].date?.['#text'] || "err")
-    setCachedSongs(recentSongs);
-  }, [recentSongs])
-
-  useEffect(() => {
-    setDate(song?.['@attr']?.nowplaying ? "playing now" : song?.date?.["#text"] || "err")
-  }, [song])
-
-  const handleFetch = () => {
+  const handleFetch = useCallback(() => {
     if (rateLimit) { 
       console.error("You are being rate limited.");
       return; 
@@ -102,7 +83,28 @@ export const LastFMComponent: React.FC<LastFMComponentProps> = ({ cachedSongs, s
     }, 10000);
 
     return () => clearTimeout(timeRateLimit);
-  }
+  }, [rateLimit])
+
+  useEffect(() => {
+    if (!cachedSongs)
+      handleFetch();
+    else
+      setRecentSongs(cachedSongs);
+  }, [cachedSongs, handleFetch])
+
+  useEffect(() => {
+    const recenttrack = recentSongs?.recenttracks.track[0];
+    setSong(recenttrack || null);
+    setScrobbles(Number(recentSongs?.recenttracks['@attr'].total) || 0);
+    setDate(recenttrack?.['@attr']?.nowplaying ? "playing now" : recentSongs?.recenttracks.track[0].date?.['#text'] || "err")
+    setCachedSongs(recentSongs);
+  }, [recentSongs, setCachedSongs])
+
+  useEffect(() => {
+    setDate(song?.['@attr']?.nowplaying ? "playing now" : song?.date?.["#text"] || "err")
+  }, [song])
+
+  
 
   return (
     <div className="c-song">
