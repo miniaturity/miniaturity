@@ -1009,15 +1009,16 @@ body {
 
   &:hover { 
     img:not(:hover) {
-      filter: blur(1px) saturate(0%) brightness(50%) invert(11%) sepia(42%) saturate(397%) hue-rotate(199deg) brightness(97%) contrast(98%);
+      filter: blur(1px);
     }
   }
 
-  & img {
+  & img, div {
     width: 75px;
     height: 75px;
     transform: rotateY(60deg);
     transform-origin: 50% 100%;
+    transform-style: preserve-3d;
     transition: transform 0.2s ease-in-out;
     margin-left: -45px;
     &:first-child {
