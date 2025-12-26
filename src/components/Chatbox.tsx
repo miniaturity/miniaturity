@@ -136,12 +136,12 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, setMessages }) => {
       msg.replies.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
 
     });
-    const timeSorted = topLevel.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+    const timeSorted = topLevel.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
     return timeSorted.sort((a, b) => {
       if (!a.isPinned && !b.isPinned) return 0;
       if (a.isPinned && b.isPinned) {
-        return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
       }
       return a.isPinned ? -1 : 1;
     })
