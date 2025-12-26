@@ -620,6 +620,7 @@ body {
   gap: 4px;
   margin: 0 4px 0 4px;
 
+  overflow-y: auto;
   color: var(--main);
 }
 
