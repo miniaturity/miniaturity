@@ -246,8 +246,8 @@ const Main: React.FC = () => {
               </div>
               
               <div className="mrb-2">
-                <a href="https://gdbrowser.com/76767195" target="_blank" rel="noreferrer" className="cursor-target">
-                  <img alt="" src="https://reidlab.pink/_astro/showmeyourheart.D0qV551_.gif" style={{ height: "31px", width: "88px"}} />
+                <a href="https://miniaturity.com" target="_blank" rel="noreferrer" className="cursor-target">
+                  <img alt="" src="images/mini.png" style={{ height: "31px", width: "88px"}} />
                 </a>
                 <a href="https://corru.observer" target="_blank" rel="noreferrer" className="cursor-target">
                   <img alt="" src="https://ivrry.nekoweb.org/assets/images/buttons/corruobserver.gif" style={{ height: "31px", width: "88px"}} />
